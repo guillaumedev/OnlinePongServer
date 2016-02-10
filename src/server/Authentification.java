@@ -37,8 +37,8 @@ public class Authentification implements Runnable {
             System.out.println(login +" vient de se connecter ");
             out.flush();
 
-            threadEmission = new Thread(new Emission(out));
-            threadEmission.start();
+            //threadEmission = new Thread(new Emission(out));
+            //threadEmission.start();
 
             threadReception = new Thread(new Reception(in, login, this.accepterConnexion));
             threadReception.start();
