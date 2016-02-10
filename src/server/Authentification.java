@@ -1,5 +1,8 @@
 package server;
 
+import Model.Balle;
+import Model.Terrain;
+
 import java.net.*;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -22,6 +25,7 @@ public class Authentification implements Runnable {
 
     public void run() {
 
+
         try {
 
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -42,6 +46,10 @@ public class Authentification implements Runnable {
 
             threadReception = new Thread(new Reception(in, login, this.accepterConnexion));
             threadReception.start();
+
+            Terrain terrain = new Terrain();
+            Balle nextBall = new Balle(terrain, socket);
+            nextBall.start();
 
         } catch (IOException e) {
 

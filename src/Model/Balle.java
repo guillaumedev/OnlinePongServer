@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -24,8 +26,9 @@ public class Balle extends Thread
    private Terrain pan;
    private double newx, newy, oldx, oldy;
    private double acceleration = 1.05;
+   private PrintWriter out;
    
-   public Balle(Terrain panel)
+   public Balle(Terrain panel, Socket socket)
    {
 	  pan = panel;
       threadStarted = true;   
@@ -46,58 +49,67 @@ public class Balle extends Thread
     	  startx = size*2;
     	  starty = size*2;
       }
+       try{
+           out = new PrintWriter(socket.getOutputStream());
+       } catch(Exception e){
+
+       }
    }
 
    public void run()
    {
-      while(threadStarted)
-      {
-        try {
-            // To free up processor time
-            Thread.sleep(10);
-         }
-         catch (InterruptedException e)
-         {  System.out.println("crash");}
+      while(threadStarted) {
+          try {
+              // To free up processor time
+              Thread.sleep(10);
+          } catch (InterruptedException e) {
+              System.out.println("crash");
+          }
 
-         oldx =  this.newx;
-         oldy =  this.newy;
-         newx = oldx + deltax;
-         if (newx < 0){
-            deltax = -deltax;
-            newx = -newx;
-         }
-         if(newx + size > pan.getWidth()){
-        	 deltax=-deltax;
-        	 newx = pan.getWidth()-((newx+size)-pan.getWidth())-size;
-         }
-         
-         ArrayList<Raquette> list = pan.getRackets();
-         for(int i=0;i<list.size();i++){
-        	 //System.out.println(list.get(i));
-        	 if(checkCollision(list.get(i))){
-        		 break;
-        	 }
-             //list.get(i).move((int) newx+(list.get(i).getSize()-(size)));
-         }
-         
-         
-         
-         newy = oldy + deltay;
-         //test loose
-         if(newy < 0){
-        	deltay = -deltay;
-        	newy = -newy;
-         }
-         
-         if(newy > pan.getHeight()){
-        	pan.removeBall(this);
-        	threadStarted = false;
-         }
-         
-         
-         breakBrick();
+          oldx = this.newx;
+          oldy = this.newy;
+          newx = oldx + deltax;
+          if (newx < 0) {
+              deltax = -deltax;
+              newx = -newx;
+          }
+          if (newx + size > pan.getWidth()) {
+              deltax = -deltax;
+              newx = pan.getWidth() - ((newx + size) - pan.getWidth()) - size;
+          }
 
-	  }
+          ArrayList<Raquette> list = pan.getRackets();
+          for (int i = 0; i < list.size(); i++) {
+              //System.out.println(list.get(i));
+              if (checkCollision(list.get(i))) {
+                  break;
+              }
+              //list.get(i).move((int) newx+(list.get(i).getSize()-(size)));
+          }
+
+
+          newy = oldy + deltay;
+          //test loose
+          if (newy < 0) {
+              deltay = -deltay;
+              newy = -newy;
+          }
+
+          if (newy > pan.getHeight()) {
+              pan.removeBall(this);
+              threadStarted = false;
+          }
+
+
+          breakBrick();
+
+          out.println("balle");
+          out.println(newx);
+          out.println(newy);
+          out.flush();
+
+      }
+
    }
 
 
