@@ -1,16 +1,18 @@
 package Model;
 
+import server.AccepterConnexion;
+
 import java.util.ArrayList;
 import java.util.Vector;
 
 public class Terrain{
 	
     private Vector<Balle> Balls;
-    private Raquette racket;
     private Brique[][] matrix;
     private ArrayList<Raquette> listRackets = new ArrayList<Raquette>();
     public static final int panelWidth = 1000;
 	public static final int panelHeight = 800;
+    private AccepterConnexion accepterConnexion;
        
     private static final String SIDES = null;
     
@@ -42,6 +44,18 @@ public class Terrain{
     
     public ArrayList<Raquette> getRackets(){
         return listRackets;
+    }
+
+    public void addRacket(Raquette r){
+        listRackets.add(r);
+        if(listRackets.size()==1){
+            Balle nextBall = new Balle(this);
+            nextBall.start();
+        }
+    }
+
+    public void moveBall(Balle b){
+        accepterConnexion.notifierAllBalle(b);
     }
 
     public void removeBall(Balle balle) {
@@ -104,6 +118,10 @@ public class Terrain{
     
     public int getHeight(){
         return panelHeight;
+    }
+
+    public void addAccepterConnexion(AccepterConnexion a){
+        accepterConnexion=a;
     }
     
 }

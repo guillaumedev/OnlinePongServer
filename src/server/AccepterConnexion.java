@@ -3,6 +3,9 @@ package server;
 /**
  * Created by guillaumebrosse on 21/01/2016.
  */
+import Model.Balle;
+import Model.Terrain;
+
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
@@ -12,12 +15,15 @@ public class AccepterConnexion implements Runnable{
     private ServerSocket socketserver = null;
     private Socket socket = null;
     private ArrayList<Authentification> listUser;
+    private Terrain terrain=null;
 
     public Thread authentificationThread;
 
-    public AccepterConnexion(ServerSocket ss){
+    public AccepterConnexion(ServerSocket ss, Terrain t){
         socketserver = ss;
         listUser=new ArrayList<Authentification>();
+        terrain=t;
+        terrain.addAccepterConnexion(this);
     }
 
     public void notifierAll(String login, String str){
@@ -25,6 +31,13 @@ public class AccepterConnexion implements Runnable{
             listUser.get(i).sendMessage(login, str);
         }
     }
+
+    public void notifierAllBalle(Balle b){
+        for(int i=0; i<listUser.size(); i++){
+            listUser.get(i).sendBall(b);
+        }
+    }
+
     public void run() {
 
         try {
@@ -33,7 +46,7 @@ public class AccepterConnexion implements Runnable{
                 socket = socketserver.accept();
                 System.out.println("Un zéro veut se connecter  ");
 
-                Authentification auth = new  Authentification(socket, this);
+                Authentification auth = new  Authentification(socket, this, terrain);
 
                 authentificationThread = new Thread(auth);
                 authentificationThread.start();

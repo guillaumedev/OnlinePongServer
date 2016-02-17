@@ -20,7 +20,9 @@ public class Server {
             ss = new ServerSocket(2009);
             System.out.println("Le serveur est à l'écoute du port "+ss.getLocalPort());
 
-            t = new Thread(new AccepterConnexion(ss));
+            Terrain terrain = new Terrain();
+
+            t = new Thread(new AccepterConnexion(ss, terrain));
             t.start();
 
         } catch (IOException e) {

@@ -1,6 +1,7 @@
 package server;
 
 import Model.Balle;
+import Model.Raquette;
 import Model.Terrain;
 
 import java.net.*;
@@ -17,10 +18,13 @@ public class Authentification implements Runnable {
     public Thread threadEmission;
     public Thread threadReception;
     private AccepterConnexion accepterConnexion;
+    private Terrain terrain;
+    private Raquette racket;
 
-    public Authentification(Socket s, AccepterConnexion a){
+    public Authentification(Socket s, AccepterConnexion a, Terrain t){
         socket = s;
         accepterConnexion=a;
+        terrain=t;
     }
 
     public void run() {
@@ -43,13 +47,11 @@ public class Authentification implements Runnable {
 
             //threadEmission = new Thread(new Emission(out));
             //threadEmission.start();
+            racket=new Raquette(terrain);
+            terrain.addRacket(racket);
 
-            threadReception = new Thread(new Reception(in, login, this.accepterConnexion));
+            threadReception = new Thread(new Reception(in, login, this.accepterConnexion, racket));
             threadReception.start();
-
-            Terrain terrain = new Terrain();
-            Balle nextBall = new Balle(terrain, socket);
-            nextBall.start();
 
         } catch (IOException e) {
 
@@ -58,6 +60,13 @@ public class Authentification implements Runnable {
     }
     public void sendMessage(String login, String str){
         out.println(login+": "+ str);
+        out.flush();
+    }
+
+    public void sendBall(Balle b){
+        out.println("balle");
+        out.println(b.getNewx());
+        out.println(b.getNewy());
         out.flush();
     }
 }

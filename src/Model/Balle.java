@@ -1,5 +1,7 @@
 package Model;
 
+import server.Emission;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -28,7 +30,7 @@ public class Balle extends Thread
    private double acceleration = 1.05;
    private PrintWriter out;
    
-   public Balle(Terrain panel, Socket socket)
+   public Balle(Terrain panel)
    {
 	  pan = panel;
       threadStarted = true;   
@@ -49,14 +51,15 @@ public class Balle extends Thread
     	  startx = size*2;
     	  starty = size*2;
       }
-       try{
+    /*   try{
            out = new PrintWriter(socket.getOutputStream());
        } catch(Exception e){
 
-       }
+       }*/
    }
 
-   public void run()
+
+    public void run()
    {
       while(threadStarted) {
           try {
@@ -103,10 +106,12 @@ public class Balle extends Thread
 
           breakBrick();
 
-          out.println("balle");
+          pan.moveBall(this);
+
+         /* out.println("balle");
           out.println(newx);
           out.println(newy);
-          out.flush();
+          out.flush();*/
 
       }
 
@@ -172,5 +177,21 @@ public class Balle extends Thread
 	public double getSize() {
 		return size;
 	}
+
+    public double getNewx() {
+        return newx;
+    }
+
+    public void setNewx(double newx) {
+        this.newx = newx;
+    }
+
+    public double getNewy() {
+        return newy;
+    }
+
+    public void setNewy(double newy) {
+        this.newy = newy;
+    }
 
 }
