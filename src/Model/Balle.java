@@ -37,6 +37,7 @@ public class Balle extends Thread
       size = 20;
       speed = 3;
       int startx = (int)(Math.random() * pan.getWidth()-(size*2));
+
       int starty = (int)(Math.random() * pan.getHeight()/2-(size*2));
 
       deltax = speed * ((int) (Math.random() * 10) >= 5 ? -1 : 1);
@@ -59,7 +60,7 @@ public class Balle extends Thread
    }
 
 
-    public void run()
+    public synchronized void run()
    {
       while(threadStarted) {
           try {
@@ -90,6 +91,10 @@ public class Balle extends Thread
               //list.get(i).move((int) newx+(list.get(i).getSize()-(size)));
           }
 
+         /* if (checkCollisionList(list) {
+              break;
+          }*/
+
 
           newy = oldy + deltay;
           //test loose
@@ -101,17 +106,14 @@ public class Balle extends Thread
           if (newy > pan.getHeight()) {
               pan.removeBall(this);
               threadStarted = false;
+              Balle nextBall = new Balle(pan);
+              nextBall.start();
           }
 
 
           breakBrick();
 
           pan.moveBall(this);
-
-         /* out.println("balle");
-          out.println(newx);
-          out.println(newy);
-          out.flush();*/
 
       }
 
@@ -120,7 +122,7 @@ public class Balle extends Thread
 
 	private void breakBrick() {
 		
-		double posx =  newx/100;
+		/*double posx =  newx/100;
 		double posy =  (newy-80)/30;
 		double posx2 =  (newx+size)/100;
 		double posy2 =  (newy+size-80)/30;
@@ -139,7 +141,7 @@ public class Balle extends Thread
 			if(!changed && dir != -1){ invertdelta(dir);changed=true;}
 			dir = pan.setMatrixValue(posy2, posx, newx, newy, size);
 			if(!changed && dir != -1){ invertdelta(dir);changed=true;}
-		}
+		}*/
 		
 	}
 
@@ -155,6 +157,25 @@ public class Balle extends Thread
 		}
 	}
 
+   /* public boolean checkCollisionList(ArrayList<Raquette> listRacket) {
+        for (int i = 0; i < listRacket.size(); i++) {
+            Raquette racket = listRacket.get(i);
+            if ((newx + size > (racket.getX()) && newx + size < (racket.getX() + racket.getSize())
+                    || newx > (racket.getX()) && newx < (racket.getX() + racket.getSize()))
+                    && newy + size >= pan.getHeight() - racket.getHeight() && newy + size < pan.getHeight() + size) {
+
+                double relativeY = (racket.getX() + (racket.getSize() / 2)) - newx - (size / 2);
+                double normalRelativeY = (relativeY / (racket.getSize() / 2));
+                double angle = (normalRelativeY * 70);
+                deltax = speed * (-Math.sin(Math.toRadians(angle)));
+                deltay = speed * (-Math.cos(Math.toRadians(angle)));
+                newy = pan.getWidth() - racket.getHeight() - ((newy + size) - pan.getHeight() - racket.getHeight());
+                speed = speed * acceleration;
+                return true;
+            }
+        }
+        return false;
+    }*/
 
 	public boolean checkCollision(Raquette racket) {
 		

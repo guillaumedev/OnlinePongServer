@@ -4,6 +4,7 @@ package server;
  * Created by guillaumebrosse on 21/01/2016.
  */
 import Model.Balle;
+import Model.Raquette;
 import Model.Terrain;
 
 import java.io.*;
@@ -26,15 +27,33 @@ public class AccepterConnexion implements Runnable{
         terrain.addAccepterConnexion(this);
     }
 
-    public void notifierAll(String login, String str){
+    public void notifierAll(String login){
         for(int i=0; i<listUser.size(); i++){
-            listUser.get(i).sendMessage(login, str);
+            if(!login.equals(listUser.get(i).getLogin())){
+                listUser.get(i).newConnexion(login);
+            }
         }
     }
 
     public void notifierAllBalle(Balle b){
         for(int i=0; i<listUser.size(); i++){
             listUser.get(i).sendBall(b);
+        }
+    }
+
+    public void notifierDepart(String l){
+        for(int i=0; i<listUser.size(); i++){
+            listUser.get(i).notifierDepart(l);
+        }
+    }
+
+    public void notifierAllRaquette(String login, String posX){
+        System.out.println(login+" "+posX);
+        for(int i=0; i<listUser.size(); i++){
+            if(!login.equals(listUser.get(i).getLogin())){
+                listUser.get(i).sendRaquette(login, posX);
+            }
+
         }
     }
 
@@ -63,4 +82,22 @@ public class AccepterConnexion implements Runnable{
     public ArrayList<Authentification> getListUsers(){
         return this.listUser;
     }
+
+    public void removeUser(String l){
+        for (int i=0; i<listUser.size();i++){
+            if(listUser.get(i).getLogin().equals(l)){
+                listUser.remove(i);
+                terrain.getRackets().remove(i);
+                System.out.println("Utilisateur supprimé");
+            }
+        }
+
+        for (int i=0; i<listUser.size();i++) {
+            listUser.get(i).notifierDepart(l);
+        }
+
+        System.out.println(listUser.size());
+    }
+
+
 }

@@ -5,6 +5,7 @@ import Model.Raquette;
 import Model.Terrain;
 
 import java.net.*;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.io.*;
@@ -42,15 +43,27 @@ public class Authentification implements Runnable {
 
 
             out.println("connecte");
-            System.out.println(login +" vient de se connecter ");
             out.flush();
+
+            ArrayList<Authentification> listUsers = accepterConnexion.getListUsers();
+            for(int i=0;i<listUsers.size();i++){
+                if(!listUsers.get(i).getLogin().equals(login)){
+                    out.println("newConnexion");
+                    out.println(listUsers.get(i).getLogin());
+                    out.flush();
+                }
+            }
+            System.out.println(login +" vient de se connecter ");
+
+
+            accepterConnexion.notifierAll(login);
 
             //threadEmission = new Thread(new Emission(out));
             //threadEmission.start();
             racket=new Raquette(terrain);
             terrain.addRacket(racket);
 
-            threadReception = new Thread(new Reception(in, login, this.accepterConnexion, racket));
+            threadReception = new Thread(new Reception(in, login, this.accepterConnexion, racket, socket));
             threadReception.start();
 
         } catch (IOException e) {
@@ -63,10 +76,33 @@ public class Authentification implements Runnable {
         out.flush();
     }
 
+    public void newConnexion(String login){
+        out.println("newConnexion");
+        out.println(login);
+        out.flush();
+    }
+
     public void sendBall(Balle b){
         out.println("balle");
         out.println(b.getNewx());
         out.println(b.getNewy());
         out.flush();
+    }
+
+    public void sendRaquette(String l, String posX){
+        out.println("moveRaquette");
+        out.println(l);
+        out.println(posX);
+        out.flush();
+    }
+
+    public void notifierDepart(String l){
+        out.println("depart");
+        out.println(l);
+        out.flush();
+    }
+
+    public String getLogin(){
+        return login;
     }
 }

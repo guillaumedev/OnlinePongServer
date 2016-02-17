@@ -25,7 +25,7 @@ public class Raquette
    {
 	  pan = terrain;  
       width = 150;
-      height = 10;
+      height = 45;
       
       startx = (int)(Math.random() * Terrain.panelWidth-width);
       starty = Terrain.panelHeight-height;
@@ -46,7 +46,7 @@ public class Raquette
    }
    
    public void setX(int x){
-	   this.posx = x;
+       this.posx = x;
    }
    
    
