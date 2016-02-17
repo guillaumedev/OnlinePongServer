@@ -122,7 +122,7 @@ public class Balle extends Thread
 
 	private void breakBrick() {
 		
-		/*double posx =  newx/100;
+		double posx =  newx/100;
 		double posy =  (newy-80)/30;
 		double posx2 =  (newx+size)/100;
 		double posy2 =  (newy+size-80)/30;
@@ -141,7 +141,7 @@ public class Balle extends Thread
 			if(!changed && dir != -1){ invertdelta(dir);changed=true;}
 			dir = pan.setMatrixValue(posy2, posx, newx, newy, size);
 			if(!changed && dir != -1){ invertdelta(dir);changed=true;}
-		}*/
+		}
 		
 	}
 

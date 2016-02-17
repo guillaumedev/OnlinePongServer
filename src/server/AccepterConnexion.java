@@ -41,6 +41,12 @@ public class AccepterConnexion implements Runnable{
         }
     }
 
+    public void notifierBreackBrick(int x, int y){
+        for(int i=0; i<listUser.size(); i++){
+            listUser.get(i).notifierBreackBrick(x,y);
+        }
+    }
+
     public void notifierDepart(String l){
         for(int i=0; i<listUser.size(); i++){
             listUser.get(i).notifierDepart(l);
@@ -57,7 +63,7 @@ public class AccepterConnexion implements Runnable{
         }
     }
 
-    public void run() {
+    public synchronized void run() {
 
         try {
             while(true){
@@ -69,7 +75,7 @@ public class AccepterConnexion implements Runnable{
 
                 authentificationThread = new Thread(auth);
                 authentificationThread.start();
-                listUser.add(auth);
+                //listUser.add(auth);
 
             }
         } catch (IOException e) {
@@ -77,6 +83,10 @@ public class AccepterConnexion implements Runnable{
             System.err.println("Erreur serveur");
         }
 
+    }
+
+    public void addUser(Authentification a){
+        listUser.add(a);
     }
 
     public ArrayList<Authentification> getListUsers(){

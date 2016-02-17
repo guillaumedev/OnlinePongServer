@@ -103,6 +103,7 @@ public class Terrain{
     	Brique b = matrix[(int)posy][(int)posx];
     	if(b.getNbCoups() <= 1){
     		matrix[(int)posy][(int)posx] = null;
+            accepterConnexion.notifierBreackBrick((int)posy, (int)posx);
     	}else{
     		b.setNbCoups(b.getNbCoups()-1);
     	}

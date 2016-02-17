@@ -1,6 +1,7 @@
 package server;
 
 import Model.Balle;
+import Model.Brique;
 import Model.Raquette;
 import Model.Terrain;
 
@@ -28,7 +29,7 @@ public class Authentification implements Runnable {
         terrain=t;
     }
 
-    public void run() {
+    public synchronized void run() {
 
 
         try {
@@ -53,6 +54,30 @@ public class Authentification implements Runnable {
                     out.flush();
                 }
             }
+
+            out.println("createMatrice");
+            Brique[][] b=terrain.getMatrix();
+            out.println(b.length);
+            out.println(b[0].length);
+            out.flush();
+            for(int i=0;i<terrain.getMatrix().length;i++){
+                for(int j=0;j<terrain.getMatrix()[i].length;j++){
+                    out.println("newCoord");
+                    out.println(i);
+                    out.println(j);
+                    out.flush();
+                    if(b[i][j]!=null) {
+                        out.println(b[i][j].getX());
+                        out.println(b[i][j].getY());
+                    } else {
+                        out.println("brickRemoved");
+                        out.println("brickRemoved");
+                    }
+                    out.flush();
+                }
+            }
+
+
             System.out.println(login +" vient de se connecter ");
 
 
@@ -66,6 +91,8 @@ public class Authentification implements Runnable {
             threadReception = new Thread(new Reception(in, login, this.accepterConnexion, racket, socket));
             threadReception.start();
 
+            accepterConnexion.addUser(this);
+
         } catch (IOException e) {
 
             System.err.println(login+" ne répond pas !");
@@ -76,29 +103,36 @@ public class Authentification implements Runnable {
         out.flush();
     }
 
-    public void newConnexion(String login){
+    public synchronized void newConnexion(String login){
         out.println("newConnexion");
         out.println(login);
         out.flush();
     }
 
-    public void sendBall(Balle b){
+    public synchronized void sendBall(Balle b){
         out.println("balle");
         out.println(b.getNewx());
         out.println(b.getNewy());
         out.flush();
     }
 
-    public void sendRaquette(String l, String posX){
+    public synchronized void sendRaquette(String l, String posX){
         out.println("moveRaquette");
         out.println(l);
         out.println(posX);
         out.flush();
     }
 
-    public void notifierDepart(String l){
+    public synchronized void notifierDepart(String l){
         out.println("depart");
         out.println(l);
+        out.flush();
+    }
+
+    public synchronized void notifierBreackBrick(int x, int y){
+        out.println("breackBrick");
+        out.println(x);
+        out.println(y);
         out.flush();
     }
 

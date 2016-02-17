@@ -23,6 +23,7 @@ public class Brique {
 		this.x = posX;
 		this.y = posY;
 		nbCoups = (Math.random()*100 > 90?2:1);
+		nbCoups=1;
 		brick = new Rectangle2D.Double(x, y, width, height);
 	}
 

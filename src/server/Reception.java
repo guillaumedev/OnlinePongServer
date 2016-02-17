@@ -26,7 +26,7 @@ public class Reception implements Runnable {
         socket=s;
     }
 
-    public void  run() {
+    public synchronized void run() {
 
         while(socket.isConnected()){
             try {
