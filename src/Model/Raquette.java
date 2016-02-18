@@ -63,4 +63,8 @@ public class Raquette
 		return this.width;
 	}
 
+    public Terrain getTerrain(){
+        return this.pan;
+    }
+
 }

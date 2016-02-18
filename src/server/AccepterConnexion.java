@@ -54,12 +54,26 @@ public class AccepterConnexion implements Runnable{
     }
 
     public void notifierAllRaquette(String login, String posX){
-        System.out.println(login+" "+posX);
         for(int i=0; i<listUser.size(); i++){
             if(!login.equals(listUser.get(i).getLogin())){
                 listUser.get(i).sendRaquette(login, posX);
             }
 
+        }
+    }
+
+    public void newPoint(Raquette s){
+        String login=null;
+        for(int i=0; i<listUser.size(); i++){
+            if(listUser.get(i).getRacket().equals(s)){
+                login=listUser.get(i).getLogin();
+            }
+        }
+
+        if(login!=null){
+            for(int i=0; i<listUser.size(); i++){
+                listUser.get(i).notifierNewPoint(login);
+            }
         }
     }
 

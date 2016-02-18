@@ -69,9 +69,9 @@ public class Terrain{
     
 
     public int setMatrixValue(double posy, double posx, double newx, double newy, double ballsize) {
-        if(posy >= 0 && posx >= 0){
+        if(posy >= 0 && posx >= 0 && posy <= matrix.length-1){
             if(matrix[(int)posy][(int)posx] != null){
-                System.out.println("DELETED: ["+(int)posy+"]["+(int)posx+"]");
+                //System.out.println("DELETED: ["+(int)posy+"]["+(int)posx+"]");
                 double minx = ((int)posx * 100);
                 double maxx = ((int)posx * 100)+100;
                 double miny = ((int)posy * 30) + 80;
@@ -85,12 +85,12 @@ public class Terrain{
                 //AFFINER LA DETECTION DES COLLISIONS AVEC LES BRIQUES
                 if((newx+ballsize/2 <= minx || maxx <= newx+ballsize/2) 
                         && (miny <= (newy+ballsize) && maxy >= (newy+ballsize) || (miny <= newy) && maxy >= (newy))){
-                    System.out.println("SIDE");
+                    //System.out.println("SIDE");
                     hitBrick(posx, posy);
                     return Brique.SIDE;
                 }
                 if(((newx >= minx && newx <= maxx) || (newx+ballsize/2 >= minx && newx+ballsize/2 <= maxx)) && miny <= newy+ballsize){
-                    System.out.println("TOP");
+                    //System.out.println("TOP");
                     hitBrick(posx, posy);
                     return Brique.UPSIDE;
                 }                
@@ -123,6 +123,10 @@ public class Terrain{
 
     public void addAccepterConnexion(AccepterConnexion a){
         accepterConnexion=a;
+    }
+
+    public AccepterConnexion getAccepterConnexion(){
+        return this.accepterConnexion;
     }
 
 
