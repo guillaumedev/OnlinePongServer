@@ -206,9 +206,10 @@ public class Authentification implements Runnable {
         out.flush();
     }
 
-    public synchronized void notifierNewPoint(String l){
+    public synchronized void notifierNewPoint(String l, int n){
         out.println("newPoint");
         out.println(l);
+        out.println(n);
         out.flush();
     }
 

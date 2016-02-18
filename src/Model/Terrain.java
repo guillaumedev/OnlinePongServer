@@ -69,7 +69,7 @@ public class Terrain{
     
 
     public int setMatrixValue(double posy, double posx, double newx, double newy, double ballsize) {
-        if(posy >= 0 && posx >= 0 && posy <= matrix.length-1){
+        if(posy >= 0 && posx >= 0 && posx <= matrix[0].length){
             if(matrix[(int)posy][(int)posx] != null){
                 //System.out.println("DELETED: ["+(int)posy+"]["+(int)posx+"]");
                 double minx = ((int)posx * 100);

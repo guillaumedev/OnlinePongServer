@@ -20,6 +20,9 @@ public class Raquette
    
    private int startx;
    private int starty;
+
+
+    private int nbPoints;
    
    public Raquette(Terrain terrain)
    {
@@ -65,6 +68,14 @@ public class Raquette
 
     public Terrain getTerrain(){
         return this.pan;
+    }
+
+    public int getNbPoints() {
+        return nbPoints;
+    }
+
+    public void setNbPoints(int nbPoints) {
+        this.nbPoints = nbPoints;
     }
 
 }

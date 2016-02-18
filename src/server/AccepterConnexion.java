@@ -64,15 +64,20 @@ public class AccepterConnexion implements Runnable{
 
     public void newPoint(Raquette s){
         String login=null;
+        int nbPoints=0;
+
+        s.setNbPoints(s.getNbPoints()+1*listUser.size());
+
         for(int i=0; i<listUser.size(); i++){
             if(listUser.get(i).getRacket().equals(s)){
                 login=listUser.get(i).getLogin();
+                nbPoints=listUser.get(i).getRacket().getNbPoints();
             }
         }
 
         if(login!=null){
             for(int i=0; i<listUser.size(); i++){
-                listUser.get(i).notifierNewPoint(login);
+                listUser.get(i).notifierNewPoint(login, nbPoints);
             }
         }
     }
