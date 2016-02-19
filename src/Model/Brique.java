@@ -17,13 +17,13 @@ public class Brique {
 	private int x, y, width, height, nbCoups;
 	
 	
-	public Brique(int posX, int posY){
+	public Brique(int posX, int posY, int nbCoups){
 		width = 100;
 		height = 30;
 		this.x = posX;
 		this.y = posY;
-		nbCoups = (Math.random()*100 > 90?2:1);
-		nbCoups=1;
+		//nbCoups = (Math.random()*100 > 90?2:1);
+		this.nbCoups=nbCoups;
 		brick = new Rectangle2D.Double(x, y, width, height);
 	}
 

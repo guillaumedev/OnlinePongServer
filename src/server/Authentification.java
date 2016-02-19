@@ -125,31 +125,13 @@ public class Authentification implements Runnable {
             if(!listUsers.get(i).getLogin().equals(login)){
                 out.println("newConnexion");
                 out.println(listUsers.get(i).getLogin());
+                out.println(listUsers.get(i).getRacket().getNbPoints());
+                out.println(listUsers.get(i).getRacket().getX());
                 out.flush();
             }
         }
 
-        out.println("createMatrice");
-        Brique[][] b=terrain.getMatrix();
-        out.println(b.length);
-        out.println(b[0].length);
-        out.flush();
-        for(int i=0;i<terrain.getMatrix().length;i++){
-            for(int j=0;j<terrain.getMatrix()[i].length;j++){
-                out.println("newCoord");
-                out.println(i);
-                out.println(j);
-                out.flush();
-                if(b[i][j]!=null) {
-                    out.println(b[i][j].getX());
-                    out.println(b[i][j].getY());
-                } else {
-                    out.println("brickRemoved");
-                    out.println("brickRemoved");
-                }
-                out.flush();
-            }
-        }
+        reloadBrick();
 
 
         System.out.println(login +" vient de se connecter ");
@@ -168,6 +150,32 @@ public class Authentification implements Runnable {
         accepterConnexion.addUser(this);
     }
 
+    public void reloadBrick(){
+        out.println("createMatrice");
+        Brique[][] b=terrain.getMatrix();
+        out.println(b.length);
+        out.println(b[0].length);
+        out.flush();
+        for(int i=0;i<terrain.getMatrix().length;i++){
+            for(int j=0;j<terrain.getMatrix()[i].length;j++){
+                out.println("newCoord");
+                out.println(i);
+                out.println(j);
+                out.flush();
+                if(b[i][j]!=null) {
+                    out.println(b[i][j].getX());
+                    out.println(b[i][j].getY());
+                    out.println(b[i][j].getNbCoups());
+                } else {
+                    out.println("brickRemoved");
+                    out.println("brickRemoved");
+                    out.println("brickRemoved");
+                }
+                out.flush();
+            }
+        }
+    }
+
     public void sendMessage(String login, String str){
         out.println(login+": "+ str);
         out.flush();
@@ -176,6 +184,8 @@ public class Authentification implements Runnable {
     public synchronized void newConnexion(String login){
         out.println("newConnexion");
         out.println(login);
+        out.println(0);
+        out.println("null");
         out.flush();
     }
 
@@ -199,10 +209,11 @@ public class Authentification implements Runnable {
         out.flush();
     }
 
-    public synchronized void notifierBreackBrick(int x, int y){
+    public synchronized void notifierBreackBrick(int x, int y, int n){
         out.println("breackBrick");
         out.println(x);
         out.println(y);
+        out.println(n);
         out.flush();
     }
 

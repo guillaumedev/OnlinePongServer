@@ -96,7 +96,7 @@ public class Balle extends Thread
           }*/
 
           if (checkCollisionList(list)){
-              System.out.println("touche");
+              //System.out.println("touche");
           }
 
 
@@ -112,6 +112,7 @@ public class Balle extends Thread
               threadStarted = false;
               Balle nextBall = new Balle(pan);
               nextBall.start();
+              pan.setLastHit(null);
           }
 
           breakBrick();
@@ -132,18 +133,45 @@ public class Balle extends Thread
 		Brique[][] matrix = pan.getMatrix();
 		int dir=-1;
 		boolean changed=false;
+        boolean brickHit=false;
+
+
 		if((posy>=0 && posy < matrix.length)){
 			dir = pan.setMatrixValue(posy, posx, newx, newy, size);
-			if(!changed && dir != -1){ invertdelta(dir); changed=true; }
-			dir = pan.setMatrixValue(posy, posx2, newx, newy, size);
-			if(!changed && dir != -1){ invertdelta(dir);changed=true;}
+			if(!changed && dir != -1){
+                invertdelta(dir);
+                changed=true;
+                brickHit=true;
+            }
+
+            if(!brickHit) {
+                dir = pan.setMatrixValue(posy, posx2, newx, newy, size);
+                if (!changed && dir != -1) {
+                    invertdelta(dir);
+                    changed = true;
+                    brickHit=true;
+                }
+            }
 		}
-		
+
 		if(posy2 < matrix.length){
-			dir = pan.setMatrixValue(posy2, posx2, newx, newy, size);
-			if(!changed && dir != -1){ invertdelta(dir);changed=true;}
-			dir = pan.setMatrixValue(posy2, posx, newx, newy, size);
-			if(!changed && dir != -1){ invertdelta(dir);changed=true;}
+            if(!brickHit){
+                dir = pan.setMatrixValue(posy2, posx2, newx, newy, size);
+                if(!changed && dir != -1){
+                    invertdelta(dir);
+                    changed=true;
+                    brickHit=true;}
+            }
+
+            if(!brickHit){
+                dir = pan.setMatrixValue(posy2, posx, newx, newy, size);
+                if(!changed && dir != -1){
+                    invertdelta(dir);
+                    changed=true;
+                    brickHit=true;
+                }
+            }
+
 		}
 		
 	}
@@ -173,7 +201,7 @@ public class Balle extends Thread
                 if (diff > newx - (racket.getX() + racket.getWidth() / 2)) {
                     selectedRacket = racket;
                     diff=newx - (racket.getX() + racket.getWidth() / 2);
-                    System.out.println("raquette trouvée");
+                    pan.setLastHit(selectedRacket);
                 }
             }
         }

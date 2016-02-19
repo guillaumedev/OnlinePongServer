@@ -4,6 +4,7 @@ package server;
  * Created by guillaumebrosse on 21/01/2016.
  */
 import Model.Balle;
+import Model.Brique;
 import Model.Raquette;
 import Model.Terrain;
 
@@ -17,6 +18,7 @@ public class AccepterConnexion implements Runnable{
     private Socket socket = null;
     private ArrayList<Authentification> listUser;
     private Terrain terrain=null;
+    private boolean firstConnexion=true;
 
     public Thread authentificationThread;
 
@@ -41,9 +43,15 @@ public class AccepterConnexion implements Runnable{
         }
     }
 
-    public void notifierBreackBrick(int x, int y){
+    public void reloadBrick(){
         for(int i=0; i<listUser.size(); i++){
-            listUser.get(i).notifierBreackBrick(x,y);
+            listUser.get(i).reloadBrick();
+        }
+    }
+
+    public void notifierBreackBrick(int x, int y, int n){
+        for(int i=0; i<listUser.size(); i++){
+            listUser.get(i).notifierBreackBrick(x,y,n);
         }
     }
 
@@ -105,6 +113,11 @@ public class AccepterConnexion implements Runnable{
     }
 
     public void addUser(Authentification a){
+        if(firstConnexion){
+            Balle nextBall = new Balle(terrain);
+            nextBall.start();
+            firstConnexion=false;
+        }
         listUser.add(a);
     }
 
