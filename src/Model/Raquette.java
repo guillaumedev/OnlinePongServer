@@ -28,7 +28,7 @@ public class Raquette
    {
 	  pan = terrain;  
       width = 150;
-      height = 45;
+      height = 30;
       
       startx = (int)(Math.random() * Terrain.panelWidth-width);
       starty = Terrain.panelHeight-height;

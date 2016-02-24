@@ -3,6 +3,7 @@ package server;
 /**
  * Created by guillaumebrosse on 21/01/2016.
  */
+import Controller.RaquetteController;
 import Model.Raquette;
 
 import java.io.BufferedReader;
@@ -15,14 +16,14 @@ public class Reception implements Runnable {
     private BufferedReader in;
     private String message = null, login = null;
     private AccepterConnexion ac;
-    private Raquette raquette;
+    private RaquetteController raquetteController;
     private Socket socket;
 
     public Reception(BufferedReader in, String login, AccepterConnexion ac, Raquette r, Socket s){
         this.ac = ac;
         this.in = in;
         this.login = login;
-        raquette=r;
+        raquetteController=new RaquetteController(r);
         socket=s;
     }
 
@@ -38,7 +39,7 @@ public class Reception implements Runnable {
                 }
                 else if(message.equals("sendracketposition")){
                     String posX = in.readLine();
-                    raquette.setX(Integer.parseInt(posX));
+                    raquetteController.setX(Integer.parseInt(posX));
                     ac.notifierAllRaquette(login, posX);
                 }
 
