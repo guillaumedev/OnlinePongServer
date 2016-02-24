@@ -32,26 +32,31 @@ public class Reception implements Runnable {
             try {
 
                 message = in.readLine();
-                //System.out.println(login+" : "+message);
-                //this.ac.notifierAll(login, message);
-                if(message.equals("sendracketposition")){
+                if(message==null){
+                   userLeft();
+                    break;
+                }
+                else if(message.equals("sendracketposition")){
                     String posX = in.readLine();
                     raquette.setX(Integer.parseInt(posX));
                     ac.notifierAllRaquette(login, posX);
                 }
 
             } catch (IOException e) {
-                try{
-                    in.close();
-                    socket.close();
-                    ac.removeUser(login);
-                    break;
-                } catch(Exception ex){
-                    System.out.println(ex);
-                }
-
+                userLeft();
                 e.printStackTrace();
+                break;
             }
+        }
+    }
+
+    public void userLeft(){
+        try{
+            in.close();
+            socket.close();
+            ac.removeUser(login);
+        } catch(Exception ex){
+            System.out.println(ex);
         }
     }
 

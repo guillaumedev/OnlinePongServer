@@ -61,58 +61,6 @@ public class Authentification implements Runnable {
                 out.flush();
                 run();
             }
-
-
-            /*out.println("connecte");
-            out.flush();*/
-
-            /*ArrayList<Authentification> listUsers = accepterConnexion.getListUsers();
-            for(int i=0;i<listUsers.size();i++){
-                if(!listUsers.get(i).getLogin().equals(login)){
-                    out.println("newConnexion");
-                    out.println(listUsers.get(i).getLogin());
-                    out.flush();
-                }
-            }
-
-            out.println("createMatrice");
-            Brique[][] b=terrain.getMatrix();
-            out.println(b.length);
-            out.println(b[0].length);
-            out.flush();
-            for(int i=0;i<terrain.getMatrix().length;i++){
-                for(int j=0;j<terrain.getMatrix()[i].length;j++){
-                    out.println("newCoord");
-                    out.println(i);
-                    out.println(j);
-                    out.flush();
-                    if(b[i][j]!=null) {
-                        out.println(b[i][j].getX());
-                        out.println(b[i][j].getY());
-                    } else {
-                        out.println("brickRemoved");
-                        out.println("brickRemoved");
-                    }
-                    out.flush();
-                }
-            }
-
-
-            System.out.println(login +" vient de se connecter ");
-
-
-            accepterConnexion.notifierAll(login);
-
-            //threadEmission = new Thread(new Emission(out));
-            //threadEmission.start();
-            racket=new Raquette(terrain);
-            terrain.addRacket(racket);
-
-            threadReception = new Thread(new Reception(in, login, this.accepterConnexion, racket, socket));
-            threadReception.start();
-
-            accepterConnexion.addUser(this);*/
-
         } catch (IOException e) {
 
             System.err.println(login+" ne répond pas !");
@@ -204,6 +152,7 @@ public class Authentification implements Runnable {
     }
 
     public synchronized void notifierDepart(String l){
+        System.out.println("IL EST PARTI"+l);
         out.println("depart");
         out.println(l);
         out.flush();
