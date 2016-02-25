@@ -1,27 +1,14 @@
 package Model;
 
-import server.Emission;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.geom.Ellipse2D;
 import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.xml.bind.SchemaOutputResolver;
-
+/**
+ * La classe Balle est celle qui gère la physique de la bale et ses deplacements
+ * @author Antoine Lebel, Guillaume Brosse, Clément LeBiez & Nicolas Belleme
+ */
 public class Balle extends Thread
 {
-   //private Ellipse2D.Double balle; 
-
    private boolean threadStarted;
    private int size;
    private double speed;       
@@ -30,7 +17,11 @@ public class Balle extends Thread
    private double newx, newy, oldx, oldy;
    private double acceleration = 1.05;
    private PrintWriter out;
-   
+
+    /**
+     * Constructeur de Balle
+     * @param panel Prend un terrain en paramètre
+     */
    public Balle(Terrain panel)
    {
 	  pan = panel;
@@ -44,11 +35,7 @@ public class Balle extends Thread
 
       deltax = speed * ((int) (Math.random() * 10) >= 5 ? -1 : 1);
       deltay = speed * ((int) (Math.random() * 10) >= 5 ? -1 : 1);
-      
-      //deltax = speed*(Math.sin(Math.toRadians((int)(Math.floor(Math.random()*360)))));
-	  //deltay = speed*(Math.cos(Math.toRadians((int)(Math.floor(Math.random()*360)))));
-      
-      //System.out.println("deltax: "+ deltax +" deltay: "+ deltay);
+
       if ((deltax == 0) && (deltay == 0)) { deltax = 1; }
       if(startx <= size || starty <= size){
     	  startx = size*2;
@@ -56,16 +43,13 @@ public class Balle extends Thread
       }
        newx=startx;
        newy=starty;
-    /*   try{
-           out = new PrintWriter(socket.getOutputStream());
-       } catch(Exception e){
-
-       }*/
    }
 
-
+    /**
+     * A chaque boucle on test si la balle est entrée en collision avec quelque chose
+     */
     public synchronized void run()
-   {
+    {
       while(threadStarted) {
           try {
               // To free up processor time
@@ -87,18 +71,8 @@ public class Balle extends Thread
           }
 
           ArrayList<Raquette> list = pan.getRackets();
-          /*for (int i = 0; i < list.size(); i++) {
-              //System.out.println(list.get(i));
-              if (checkCollision(list.get(i))) {
-                  break;
-              }
-              //list.get(i).move((int) newx+(list.get(i).getSize()-(size)));
-          }*/
 
-          if (checkCollisionList(list)){
-              //System.out.println("touche");
-          }
-
+          checkCollisionList(list);
 
           newy = oldy + deltay;
           //test loose
@@ -116,7 +90,6 @@ public class Balle extends Thread
           }
 
           breakBrick();
-
           pan.moveBall(this);
 
       }
@@ -124,6 +97,9 @@ public class Balle extends Thread
    }
 
 
+    /**
+     * Code appelé pour tester si une brique est cassée
+     */
 	private void breakBrick() {
 		
 		double posx =  newx/100;
@@ -177,6 +153,10 @@ public class Balle extends Thread
 	}
 
 
+    /**
+     * Inverse la direction de la balle
+     * @param dir int
+     */
 	private void invertdelta(int dir) {
 		switch(dir){
 			case Brique.UPSIDE :
@@ -188,6 +168,11 @@ public class Balle extends Thread
 		}
 	}
 
+    /**
+     * Teste si la balle a rencontré un mur et définit quelle raquette est la plus proche de la balle (en son centre)
+     * @param listRacket Arraylist de raquette
+     * @return boolean
+     */
     public boolean checkCollisionList(ArrayList<Raquette> listRacket) {
         double diff=200;
         Raquette selectedRacket=null;
@@ -206,6 +191,7 @@ public class Balle extends Thread
             }
         }
 
+        //Si il n'y a pas de raquette courante, on essaie de trouver la quelle est la plus proche du centre
         if(selectedRacket!=null) {
             double relativeY = (selectedRacket.getX() + (selectedRacket.getSize() / 2)) - newx - (size / 2);
             double normalRelativeY = (relativeY / (selectedRacket.getSize() / 2));
@@ -223,42 +209,19 @@ public class Balle extends Thread
         }
     }
 
-	public boolean checkCollision(Raquette racket) {
-		
-		if((newx+size > (racket.getX()) && newx+size < (racket.getX()+racket.getSize())
-			|| newx > (racket.getX()) && newx < (racket.getX()+racket.getSize())) 
-				&& newy+size >= pan.getHeight()-racket.getHeight() && newy+size < pan.getHeight()+size){	
-			
-			double relativeY = (racket.getX()+(racket.getSize()/2)) - newx - (size/2);
-			double normalRelativeY = (relativeY/(racket.getSize()/2));
-			double angle = (normalRelativeY * 70);
-			deltax = speed*(-Math.sin(Math.toRadians(angle)));
-			deltay = speed*(-Math.cos(Math.toRadians(angle)));
-			newy = pan.getWidth()-racket.getHeight()-((newy+size)-pan.getHeight()-racket.getHeight()); 
-			speed = speed*acceleration;
-			return true;
-		}
-		return false;	
-	}
-
-	public double getSize() {
-		return size;
-	}
-
+    /**
+     * Getter
+     * @return double
+     */
     public double getNewx() {
         return newx;
     }
 
-    public void setNewx(double newx) {
-        this.newx = newx;
-    }
-
+    /**
+     * getter
+     * @return double
+     */
     public double getNewy() {
         return newy;
     }
-
-    public void setNewy(double newy) {
-        this.newy = newy;
-    }
-
 }

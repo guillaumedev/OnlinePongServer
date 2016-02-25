@@ -1,20 +1,20 @@
 package server;
 
-/**
- * Created by guillaumebrosse on 21/01/2016.
- */
-
 import Model.Terrain;
-
 import java.io.*;
 import java.net.*;
 
-//Classe de lancement de l'application, qui contient le main de l'application
+/**
+ * Classe de lancement du serveur
+ * @author Antoine Lebel, Guillaume Brosse, Clément LeBiez & Nicolas Belleme
+ */
 public class Server {
     public static ServerSocket ss = null;
     public static Thread t;
 
-    //La classe main permet de lancer l'application, elle va creer une socket server pour écouter le port spécifié (ici 2009)
+    /**
+     * La classe main permet de lancer l'application, elle va creer une socket server pour écouter le port spécifié (ici 2009)
+     */
     public static void main(String[] args) {
         try {
             ss = new ServerSocket(2009);

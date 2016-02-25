@@ -1,73 +1,87 @@
 package Model;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
 
-import javax.swing.JPanel;
 
+/**
+ * La classe Brique sert a definir une brique du casse brique avec ses positions dans la matrice
+ * @author Antoine Lebel, Guillaume Brosse, Clément LeBiez & Nicolas Belleme
+ */
 public class Brique {
 	
 	public static final int UPSIDE = 0;
 	public static final int SIDE = 1;
 	private Rectangle2D.Double brick;
 	private int x, y, width, height, nbCoups;
-	
-	
+
+
+    /**
+     * Constructeur
+     * @param posX position x dans la matrice
+     * @param posY position y dans la matrice
+     * @param nbCoups nombre de coups
+     */
 	public Brique(int posX, int posY, int nbCoups){
 		width = 100;
 		height = 30;
 		this.x = posX;
 		this.y = posY;
-		//nbCoups = (Math.random()*100 > 90?2:1);
 		this.nbCoups=nbCoups;
 		brick = new Rectangle2D.Double(x, y, width, height);
 	}
 
-
+    /**
+     * Getter
+     * @return int
+     */
 	public int getX() {
 		return x;
 	}
 
-	public void setX(int x) {
-		this.x = x;
-	}
-
+    /**
+     * Getter
+     * @return int
+     */
 	public int getY() {
 		return y;
 	}
 
-	public void setY(int y) {
-		this.y = y;
-	}
-
+    /**
+     * Getter
+     * @return int
+     */
 	public int getWidth() {
 		return width;
 	}
 
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
+    /**
+     * Getter
+     * @return int
+     */
 	public int getHeight() {
 		return height;
 	}
 
-	public void setHeight(int height) {
-		this.height = height;
-	}
-	
+    /**
+     * Converty les coordonnées de la brique en string
+     * @return String
+     */
 	public String toString(){
 		return x+" - "+y;
 	}
 
+    /**
+     * Getter
+     * @return int
+     */
 	public int getNbCoups() {
 		return nbCoups;
 	}
-	
+
+    /**
+     * Met a jour le nombre de coups restants de la brique
+     * @param nb int
+     */
 	public void setNbCoups(int nb) {
 		nbCoups = nb;
 	}

@@ -1,8 +1,5 @@
 package server;
 
-/**
- * Created by guillaumebrosse on 21/01/2016.
- */
 import Model.Balle;
 import Model.Raquette;
 import Model.Terrain;
@@ -11,7 +8,11 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 
-//La classe AccepterConnexion est celle qui se charge d'accepter les connexions et d'envoyer a chaque thread les notifications
+/**
+ * La classe AccepterConnexion est celle qui se charge d'accepter les connexions et d'envoyer a chaque thread les notifications
+ * @author Antoine Lebel, Guillaume Brosse, Clément LeBiez & Nicolas Belleme
+ */
+
 public class AccepterConnexion implements Runnable{
 
     private ServerSocket socketserver = null;

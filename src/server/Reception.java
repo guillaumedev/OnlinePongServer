@@ -1,16 +1,15 @@
 package server;
 
-/**
- * Created by guillaumebrosse on 21/01/2016.
- */
 import Controller.RaquetteController;
 import Model.Raquette;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.Socket;
 
-
+/**
+ * Classe qui est chargée de recevoir les évènements et socket du client
+ * @author Antoine Lebel, Guillaume Brosse, Clément LeBiez & Nicolas Belleme
+ */
 public class Reception implements Runnable {
 
     private BufferedReader in;
@@ -19,6 +18,14 @@ public class Reception implements Runnable {
     private RaquetteController raquetteController;
     private Socket socket;
 
+    /**
+     * Constructeur de la classe
+     * @param in instance de BufferedReader
+     * @param login login de l'utilisateur
+     * @param ac INstance d'accepterConnexion
+     * @param r instance de raquette
+     * @param s instance de socket
+     */
     public Reception(BufferedReader in, String login, AccepterConnexion ac, Raquette r, Socket s){
         this.ac = ac;
         this.in = in;
@@ -27,11 +34,13 @@ public class Reception implements Runnable {
         socket=s;
     }
 
+    /**
+     * tant que la socket est connectée, on lit les messages envoyés par le client
+     */
     public synchronized void run() {
 
         while(socket.isConnected()){
             try {
-
                 message = in.readLine();
                 if(message==null){
                    userLeft();
@@ -51,6 +60,9 @@ public class Reception implements Runnable {
         }
     }
 
+    /**
+     * Si un utilisateur s'en va, on ferme la socket et le bufferedReader et on notifie accepterConnexion qu'un utilisateur est parti
+     */
     public void userLeft(){
         try{
             in.close();

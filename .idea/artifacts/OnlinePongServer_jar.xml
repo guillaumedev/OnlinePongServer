@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="OnlinePongServer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/OnlinePongServer_jar</output-path>
+    <root id="archive" name="OnlinePongServer.jar">
+      <element id="module-output" name="OnlinePongServer" />
+    </root>
+  </artifact>
+</component>
